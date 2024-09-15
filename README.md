@@ -1,101 +1,183 @@
-# Fruit.ai Frontend
+## Assignment
+
+## Fruit.ai product
 
 ## Table of Contents
 
-- [Overview](#overview)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Setup](#setup)
 - [Running the Application](#running-the-application)
-- [Frontend Routes](#frontend-routes)
-- [Responsive Design](#responsive-design)
-
-## Overview
-
-The frontend of the Fruit.ai project is built using React.js. It provides an interactive user interface for interacting with the FAQ system. Users can log in, view FAQs, use translation features, and more.
+- [API Endpoints](#api-endpoints)
+- [Example JSON](#example-json-for-creating-a-new-faq)
+- [Error Handling](#error-handling)
+- [FAQ Model](#faq-model)
+- [Working of Frontend](#Working-of-Frontend)
+- [Routes](#Routes-in-the-Application)
+- [Responsive](#Responsive)
 
 ## Features
 
-- **Login Page:** Users can log in using dummy credentials.
-- **Homepage:** Provides navigation to various sections of the application.
-- **Chat Button:** Redirects to the ChatApp page after a splash screen.
-- **Translate Button:** Leads to a translation page.
-- **FAQs Button:** Displays a list of FAQs retrieved from the backend.
-- **About Button:** Shows information about the application.
+- **Get all FAQs:** Retrieve a list of all FAQs in the system.
+- **Get a single FAQ:** Retrieve the details of an FAQ using its ID.
+- **Create an FAQ:** Add a new FAQ to the system.
+- **Update an FAQ:** Modify the details of an existing FAQ.
+- **Delete an FAQ:** Remove an FAQ from the system.
 
 ## Requirements
 
-- Node.js (v14 or higher)
-- npm (v6 or higher) or Yarn (optional)
+- Python 3.9+
+- Django 3.2+
+- Django REST Framework
+- React
 
 ## Setup
 
-1. Clone the repository:
+### Backend Setup
 
+1. Clone the repository:
     ```bash
     git clone https://github.com/MrFranklink/Fruit.ai.git
     ```
-
-2. Navigate to the `frontend` directory:
-
+   
+2. Navigate to the server directory:
     ```bash
-    cd Fruit.ai/frontend
+    cd server
     ```
 
-3. Install the required dependencies:
+3. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-    Using npm:
+4. Run database migrations:
+    ```bash
+    python manage.py migrate
+    ```
+
+5. Start the development server:
+    ```bash
+    python manage.py runserver
+    ```
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+    ```bash
+    cd frontend
+    ```
+
+2. Install dependencies:
     ```bash
     npm install
     ```
-
-    Or using Yarn:
+    or if using yarn:
     ```bash
     yarn install
     ```
 
-4. Create a `.env` file in the `frontend` directory and add the following environment variable:
-
+3. Set up environment variables by creating a `.env` file in the root of your project with the following key:
     ```bash
-    REACT_APP_API_URL=http://localhost:8000/api
+    VITE_API_URL=http://localhost:5000
     ```
 
 ## Running the Application
 
-To start the frontend development server:
+After starting the backend server, you can access the API at `http://127.0.0.1:8000/` using your preferred API testing tool (e.g., Postman, curl, etc.).
 
-1. Run the following command:
+You can access the deployed API at [Deployed API Link](https://fruit-ai-0bco.onrender.com/api/faqs).
 
-    Using npm:
-    ```bash
-    npm start
-    ```
+For the frontend, access the deployed app at [Deployed Frontend Link](https://fruit-ai-0bco.onrender.com/).
 
-    Or using Yarn:
-    ```bash
-    yarn start
-    ```
+## API Endpoints
 
-2. The application will be available at `http://localhost:3000` by default.
+| Method | Endpoint          | Description                       |
+|--------|-------------------|-----------------------------------|
+| GET    | `/faqs/`           | Retrieve all FAQs                 |
+| GET    | `/faqs/:id`        | Retrieve a specific FAQ by ID     |
+| POST   | `/faqs/create/`    | Create a new FAQ                  |
+| PUT    | `/faqs/:id`        | Update an FAQ by ID               |
+| DELETE | `/faqs/:id`        | Delete an FAQ by ID               |
 
-## Frontend Routes
+## Example JSON for Creating a New FAQ
 
-Here is an overview of the routes configured in the frontend application:
+```json
+{
+  "name": "John Doe",
+  "title": "What is Django?",
+  "description": "Django is a high-level Python web framework for building web applications.",
+  "image_url": "url_link"
+}
+```
 
-- **/**: Login Page
-- **/home**: Homepage after login
-- **/translate**: Translation page
-- **/splash**: Brief splash screen before loading ChatApp
-- **/chatapp**: Main chat application page
-- **/about**: About page
-- **/faq**: FAQ page
+## Error Handling
 
-## Responsive Design
+- **404 Not Found:** If the requested FAQ does not exist, the API will return a 404 status with an error message.
+- **400 Bad Request:** If there is a validation error in the request (e.g., missing or invalid data), the API will return a 400 status with the relevant error details.
 
-The frontend application is designed to be responsive and works well on various device resolutions, including:
+## FAQ Model
 
-- iPhone 14 Pro Max (430x932)
-- iPhone XR (414x896)
-- iPhone SE (375x667)
-- Google Pixel 7 (412x915)
-- Samsung Galaxy S20 (412x915)
+The `Faq` model contains the following fields:
+
+- `faqs_id`: Auto-incremented primary key for each FAQ.
+- `name`: The name of the person asking the question (max length: 50 characters).
+- `title`: A brief title summarizing the question (max length: 50 characters).
+- `description`: A detailed answer to the FAQ (text field).
+- `image_url`: The URL of an image related to the FAQ (optional).
+
+```
+
+### Key Fixes:
+1. Adjusted the formatting to improve clarity.
+2. Corrected heading levels and provided a proper table of contents.
+3. Standardized the code block styles (bash, json).
+4. Linked the deployed API and frontend URLs.
+
+```
+
+## Working of Frontend
+
+**Login Page**
+
+To access the homepage, follow these steps:
+
+- Enter any username and password (dummy credentials are acceptable).
+- Click the Login button. After successful login, you will be redirected to the Homepage.
+**Homepage**
+
+- On the homepage, you will find buttons that lead to different sections of the application:
+
+**Chat Button**: Clicking this button will take you to a splash screen for 1 second before redirecting to the ChatApp page.
+
+**Translate Button**: Redirects to the Translate page where you can perform translations(dummy).
+
+**FAQs Button**: Displays all the FAQs retrieved from the API. Ensure that the backend server is running or the deployed site is accessible/running before accessing this page; otherwise, an error will be thrown.
+
+About Button: Redirects to the About page, which provides details about the application.
+
+## Routes in the Application
+
+Here is an overview of the routes configured in the frontend:
+
+**/** - Login Page: The root route that loads the login page.
+
+**/home** - Homepage: After a successful login, users are redirected to the homepage.
+
+**/translate** - Translator Page: Provides the translation feature.
+
+**/splash** - Splash Screen: A temporary screen that shows for 1 second before redirecting to the chat application.
+
+**/chatapp** - Chat Application: The main chat page where users can interact.
+
+**/about** - About Page: Displays information about the application.
+
+**/faq** - FAQ Page: Displays frequently asked questions retrieved from the backend.
+
+## Responsive
+
+app is fully responsive for tested devices with resolutions like
+Iphone 14 pro max (430x932)
+Iphone XR (414x896)
+Iphone Se (375x667)
+Pixel 7 (412x915)
+Samsung Galaxy s20 (412x915)
